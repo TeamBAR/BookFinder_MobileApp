@@ -63,6 +63,10 @@ Required Feature
 
 <!-- Add picture of your hand sketched wireframes in this section -->
 ![BookFinderWireframe](https://hackmd.io/_uploads/B1CTUJnGke.png)
+![Android Compact - 1](https://hackmd.io/_uploads/BJjssbFX1e.png)
+![Android Compact - 3](https://hackmd.io/_uploads/HkjsiZFmJe.png)
+![Android Compact - 4](https://hackmd.io/_uploads/rJjiiWYX1x.png)
+
 
 
 ### [BONUS] Digital Wireframes & Mockups
