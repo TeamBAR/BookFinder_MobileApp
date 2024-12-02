@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background color inside -->
+    <solid android:color="@android:color/white" />
+
+    <!-- Border with black color -->
+    <stroke
+        android:color="@android:color/black"
+        android:width="2dp" />
+
+    <!-- Rounded corners (standard search bar shape) -->
+    <corners android:radius="20dp" />
+</shape>
