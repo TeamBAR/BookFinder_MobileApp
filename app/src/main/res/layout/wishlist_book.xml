@@ -21,7 +21,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:contentDescription="Back"
-            android:src="@drawable/border_search_bar" />
+            android:src="@drawable/baseline_arrow_back_24" />
     </LinearLayout>
 
     <!-- Title -->
