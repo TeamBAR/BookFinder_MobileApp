@@ -14,6 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.codepath.asynchttpclient.AsyncHttpClient
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
 import okhttp3.Headers
+import android.content.Intent
+import android.widget.ImageView
+import androidx.core.content.ContextCompat.startActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var bookRecyclerView: RecyclerView
@@ -30,12 +33,19 @@ class MainActivity : AppCompatActivity() {
         bookList = mutableListOf()
         bookAdapter = BookAdapter(bookList)
 
+        val favoriteIcon = findViewById<ImageView>(R.id.favoriteIcon)
+        favoriteIcon.setOnClickListener {
+            val intent = Intent(this, wishlist::class.java)
+            startActivity(intent)
+        }
         // Set up the RecyclerView
         bookRecyclerView.layoutManager = LinearLayoutManager(this)
         bookRecyclerView.adapter = bookAdapter
 
         // Add custom spacing between items
         bookRecyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
+
+
             override fun getItemOffsets(
                 outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
             ) {
@@ -206,3 +216,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
+
