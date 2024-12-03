@@ -16,7 +16,9 @@ import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
 import okhttp3.Headers
 import android.content.Intent
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 
 class MainActivity : AppCompatActivity() {
     private lateinit var bookRecyclerView: RecyclerView
@@ -30,6 +32,9 @@ class MainActivity : AppCompatActivity() {
 
         // Initialize RecyclerView and the list to store Book data
         bookRecyclerView = findViewById(R.id.bookRecyclerView)
+        bookRecyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+
+
         bookList = mutableListOf()
         bookAdapter = BookAdapter(bookList)
 
@@ -216,5 +221,3 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-
-

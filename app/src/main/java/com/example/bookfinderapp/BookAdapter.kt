@@ -49,3 +49,4 @@ class BookAdapter(private val bookList: List<Book>) : RecyclerView.Adapter<BookA
         return bookList.size
     }
 }
+
