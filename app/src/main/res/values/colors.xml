@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="favorite_active">#FF0000</color> <!-- Red for active -->
+    <color name="favorite_inactive">#808080</color> <!-- Gray for inactive -->
+
 </resources>

@@ -64,7 +64,7 @@
 
     <!-- RecyclerView for Book List -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/bookRecyclerView"
+        android:id="@+id/favoriteRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:padding="8dp"

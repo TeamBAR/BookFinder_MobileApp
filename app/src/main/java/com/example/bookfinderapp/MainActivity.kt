@@ -1,30 +1,31 @@
 package com.example.bookfinderapp
 
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import androidx.appcompat.widget.SearchView
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.codepath.asynchttpclient.AsyncHttpClient
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
 import okhttp3.Headers
-import android.content.Intent
-import android.widget.ImageView
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.appcompat.widget.SearchView
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var bookRecyclerView: RecyclerView
     private lateinit var bookList: MutableList<Book>
     private lateinit var bookAdapter: BookAdapter
     private lateinit var searchView: SearchView
+    private var favoriteBooks = mutableListOf<Book>() // List to track favorite books
+
+    private val FAVORITE_BOOKS_REQUEST_CODE = 100 // Unique request code
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,28 +35,26 @@ class MainActivity : AppCompatActivity() {
         bookRecyclerView = findViewById(R.id.bookRecyclerView)
         bookRecyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
 
-
         bookList = mutableListOf()
-        bookAdapter = BookAdapter(bookList)
-
-        val favoriteIcon = findViewById<ImageView>(R.id.favoriteIcon)
-        favoriteIcon.setOnClickListener {
-            val intent = Intent(this, wishlist::class.java)
-            startActivity(intent)
+        bookAdapter = BookAdapter(bookList) { book ->
+            // Handle adding/removing the book from favorites
+            if (!favoriteBooks.contains(book)) {
+                favoriteBooks.add(book) // Add the book to favorites
+                Toast.makeText(this, "${book.title} added to favorites!", Toast.LENGTH_SHORT).show()
+            } else {
+                favoriteBooks.remove(book) // Remove the book from favorites
+                Toast.makeText(this, "${book.title} removed from favorites!", Toast.LENGTH_SHORT).show()
+            }
         }
+
         // Set up the RecyclerView
         bookRecyclerView.layoutManager = LinearLayoutManager(this)
         bookRecyclerView.adapter = bookAdapter
 
         // Add custom spacing between items
         bookRecyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
-
-
-            override fun getItemOffsets(
-                outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
-            ) {
+            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                 super.getItemOffsets(outRect, view, parent, state)
-                // Control the spacing between items
                 outRect.top = 4
                 outRect.bottom = 4
             }
@@ -87,6 +86,14 @@ class MainActivity : AppCompatActivity() {
         // Initially fetch random books
         fetchRandomBooks(10)
 
+        // Handle favorite icon click to navigate to Favorite screen
+        val favoriteIcon = findViewById<ImageView>(R.id.favoriteIcon)
+        favoriteIcon.setOnClickListener {
+            val intent = Intent(this, Favorite::class.java)
+            intent.putParcelableArrayListExtra("favorite_books", ArrayList(favoriteBooks))
+            startActivityForResult(intent, FAVORITE_BOOKS_REQUEST_CODE)
+        }
+
         // Close the keyboard when tapping outside the search bar
         findViewById<View>(R.id.bookRecyclerView).setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
@@ -113,52 +120,33 @@ class MainActivity : AppCompatActivity() {
 
         client.get(url, object : JsonHttpResponseHandler() {
             override fun onSuccess(statusCode: Int, headers: Headers, json: JsonHttpResponseHandler.JSON) {
-                Log.d("BooksAPI", "Response: $json")
-
-                // Safely extract the 'items' array from the JSON response
+                // Handle success response
                 val items = json.jsonObject.optJSONArray("items") ?: return
                 for (i in 0 until items.length()) {
                     val item = items.optJSONObject(i) ?: continue
                     val volumeInfo = item.optJSONObject("volumeInfo") ?: continue
-
-                    // Get the book title
                     val bookTitle = volumeInfo.optString("title", "No title")
-
-                    // Safely handle the imageLinks field
                     val imageLinks = volumeInfo.optJSONObject("imageLinks")
-                    val bookImageUrl = imageLinks?.optString("thumbnail", "") ?: "" // Default to empty string if not found
-
-                    // Get the authors (handle if authors is missing or null)
+                    val bookImageUrl = imageLinks?.optString("thumbnail", "") ?: ""
                     val bookAuthors = volumeInfo.optJSONArray("authors")?.let { authorsJsonArray ->
-                        List(authorsJsonArray.length()) { index ->
-                            authorsJsonArray.getString(index) // Use 'index' to get each author
-                        }
+                        List(authorsJsonArray.length()) { index -> authorsJsonArray.getString(index) }
                     }?.joinToString(", ") ?: "Unknown Author"
-
-                    // Get the book description (handle missing descriptions)
                     val bookDescription = volumeInfo.optString("description", "No description available")
 
-                    // Check if this book is already added
+                    // Avoid duplicate books
                     if (!addedTitles.contains(bookTitle)) {
-                        // Create a new Book object
                         val newBook = Book(bookTitle, bookImageUrl, bookAuthors, bookDescription)
-                        // Add the title to the set
                         addedTitles.add(bookTitle)
-
-                        // Add the book to the list
                         bookList.add(newBook)
-
-                        // Notify the adapter of the new item
                         bookAdapter.notifyItemInserted(bookList.size - 1)
                     }
                 }
 
-                // Notify the adapter that the data has changed
                 bookAdapter.notifyDataSetChanged()
             }
 
             override fun onFailure(statusCode: Int, headers: Headers?, errorResponse: String, throwable: Throwable?) {
-                Log.e("BooksAPI", "Failed to fetch Book data: $errorResponse")
+                // Handle failure response
             }
         })
     }
@@ -171,15 +159,11 @@ class MainActivity : AppCompatActivity() {
         bookList.clear()
         bookAdapter.notifyDataSetChanged()
 
-        // Use a broad search term like "bestseller" and randomly pick a start index
-        val randomStartIndex = (0..1000).random()  // Random start index for pagination
+        val randomStartIndex = (0..1000).random()
         val url = "https://www.googleapis.com/books/v1/volumes?q=bestseller&maxResults=$count&startIndex=$randomStartIndex"
 
         client.get(url, object : JsonHttpResponseHandler() {
             override fun onSuccess(statusCode: Int, headers: Headers, json: JsonHttpResponseHandler.JSON) {
-                Log.d("BooksAPI", "Response: $json")
-
-                // Parse the response JSON to get Book data
                 val items = json.jsonObject.optJSONArray("items") ?: return
                 for (i in 0 until items.length()) {
                     val item = items.optJSONObject(i) ?: continue
@@ -189,9 +173,7 @@ class MainActivity : AppCompatActivity() {
                     val imageLinks = volumeInfo.optJSONObject("imageLinks")
                     val bookImageUrl = imageLinks?.optString("thumbnail", "") ?: ""
                     val bookAuthors = volumeInfo.optJSONArray("authors")?.let { authorsJsonArray ->
-                        List(authorsJsonArray.length()) { index ->
-                            authorsJsonArray.getString(index)
-                        }
+                        List(authorsJsonArray.length()) { index -> authorsJsonArray.getString(index) }
                     }?.joinToString(", ") ?: "Unknown Author"
                     val bookDescription = volumeInfo.optString("description", "No description available")
 
@@ -207,7 +189,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(statusCode: Int, headers: Headers?, errorResponse: String, throwable: Throwable?) {
-                Log.e("BooksAPI", "Failed to fetch Book data: $errorResponse")
+                // Handle failure response
             }
         })
     }
@@ -218,6 +200,15 @@ class MainActivity : AppCompatActivity() {
         val currentFocusView = currentFocus
         currentFocusView?.let {
             imm.hideSoftInputFromWindow(it.windowToken, 0)
+        }
+    }
+
+    // Handle the result when coming back from Favorite screen
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == FAVORITE_BOOKS_REQUEST_CODE && resultCode == RESULT_OK) {
+            // Retrieve updated favorite books list
+            favoriteBooks = data?.getParcelableArrayListExtra("favorite_books") ?: mutableListOf()
         }
     }
 }
