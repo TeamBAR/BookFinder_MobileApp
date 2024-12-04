@@ -51,6 +51,19 @@ class Favorite : AppCompatActivity() {
         homeIcon.setOnClickListener {
             finish() // Close current activity and return to MainActivity
         }
+        // Library button functionality
+        val libraryButton: ImageView = findViewById(R.id.libraryIcon) // Changed to ImageView
+        libraryButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Info button functionality
+        val infoButton: ImageView = findViewById(R.id.InfromationIcon) // Changed to ImageView
+        infoButton.setOnClickListener {
+            val intent = Intent(this, AboutUs::class.java)
+            startActivity(intent)
+        }
 
         // If the user is returning from MainActivity with new books to add
         val newFavoriteBooks: List<Book>? = intent.getParcelableArrayListExtra("new_favorite_books")
