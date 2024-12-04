@@ -1,6 +1,6 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="20dp"
@@ -13,60 +13,52 @@
         android:contentDescription="Book Image"
         android:scaleType="fitCenter"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="13dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/bookFavoriteIcon"
+        android:id="@+id/favoriteIcon"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="11dp"
+        android:layout_marginEnd="16dp"
         android:contentDescription="Add to Favorites"
         android:src="@drawable/baseline_favorite_border_24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/bookTitle"
-        tools:layout_editor_absoluteY="10dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/bookTitle"
-        android:layout_width="193dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="7dp"
-        android:gravity="center_horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="40dp"
         android:text="Title"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="#000000"
+        android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/bookImage"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="5dp" />
+        app:layout_constraintEnd_toStartOf="@id/favoriteIcon"
+        app:layout_constraintStart_toEndOf="@id/bookImage"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/bookAuthor"
-        android:layout_width="188dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="88dp"
-        android:gravity="center_horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:text="Author(s)"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/bookImage"
-        app:layout_constraintTop_toBottomOf="@+id/bookTitle" />
+        android:textColor="#666666"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@id/favoriteIcon"
+        app:layout_constraintStart_toEndOf="@id/bookImage"
+        app:layout_constraintTop_toBottomOf="@id/bookTitle" />
 
     <TextView
         android:id="@+id/bookDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="7dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:paddingTop="8dp"
         android:text="Description"
@@ -74,7 +66,7 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/bookImage"
-        app:layout_constraintTop_toBottomOf="@+id/bookAuthor" />
+        app:layout_constraintStart_toEndOf="@id/bookImage"
+        app:layout_constraintTop_toBottomOf="@id/bookAuthor" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

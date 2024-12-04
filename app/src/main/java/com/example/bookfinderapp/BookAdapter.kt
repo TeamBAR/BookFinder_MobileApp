@@ -18,7 +18,7 @@ class BookAdapter(
         val authorTextView: TextView = itemView.findViewById(R.id.bookAuthor)
         val bookImageView: ImageView = itemView.findViewById(R.id.bookImage)
         val descriptionTextView: TextView = itemView.findViewById(R.id.bookDescription)
-        val favoriteIcon: ImageView = itemView.findViewById(R.id.bookFavoriteIcon)
+        val favoriteIcon: ImageView = itemView.findViewById(R.id.favoriteIcon)
 
         init {
             favoriteIcon.setOnClickListener {

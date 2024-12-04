@@ -38,6 +38,12 @@ class MainActivity : AppCompatActivity() {
         bookRecyclerView = findViewById(R.id.bookRecyclerView)
         bookRecyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
 
+        val infoIcon: ImageView = findViewById(R.id.InfromationIcon)
+        infoIcon.setOnClickListener {
+            val intent = Intent(this, AboutUs::class.java)
+            startActivity(intent)
+        }
+
         bookList = mutableListOf()
         bookAdapter = BookAdapter(bookList) { book ->
             // Handle adding/removing the book from favorites

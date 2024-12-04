@@ -1,0 +1,113 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#F5F5F5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Back Icon -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/backIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:contentDescription="Back"
+                android:src="@drawable/baseline_arrow_back_24" />
+        </LinearLayout>
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/aboutUsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="About Us"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:paddingBottom="16dp" />
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/aboutUsDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="4dp"
+            android:textColor="#666666"
+            android:textSize="20sp"
+            android:text="Book Finder is a discovery app designed for book lovers. Our mission is to make book discovery and management easy, whether you're looking for your next great read or conducting research on a specific topic. \n\nWe serve a wide audience, including students, researchers, and casual readers, providing tools to explore books by title, author, or genre and manage personal reading lists."
+            android:paddingBottom="16dp" />
+
+        <!-- Team Section -->
+        <TextView
+            android:id="@+id/teamTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="\n\nMeet the Team"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:paddingBottom="8dp" />
+
+        <TextView
+            android:id="@+id/teamContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="4dp"
+            android:textColor="#666666"
+            android:textSize="18sp"
+            android:text="Abraham Gonzalez\nRaul Aguilar-Soto\nBao Phuc Nguyen"
+            android:paddingBottom="16dp" />
+
+        <!-- School Section -->
+        <TextView
+            android:id="@+id/schoolTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Our School"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:paddingBottom="8dp" />
+
+        <TextView
+            android:id="@+id/schoolContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="4dp"
+            android:textColor="#666666"
+            android:textSize="18sp"
+            android:text="Texas A-M University"
+            android:paddingBottom="16dp" />
+
+        <!-- Contact Information -->
+        <TextView
+            android:id="@+id/contactTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Contact Us"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:paddingBottom="8dp" />
+
+        <TextView
+            android:id="@+id/contactContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="4dp"
+            android:textColor="#666666"
+            android:textSize="18sp"
+            android:text="For feedback or inquiries, reach out to us at support@bookfinderapp.com."
+            android:paddingBottom="16dp" />
+    </LinearLayout>
+</ScrollView>

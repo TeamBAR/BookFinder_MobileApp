@@ -6,6 +6,8 @@
     tools:context=".MainActivity">
 
     <!-- Header Title -->
+
+    <!-- Custom Search Bar -->
     <TextView
         android:id="@+id/headerTitle"
         android:layout_width="0dp"
@@ -14,14 +16,13 @@
         android:gravity="center"
         android:padding="16dp"
         android:text="Book Finder"
-        android:textSize="50sp"
+        android:textSize="60sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Custom Search Bar -->
     <LinearLayout
         android:id="@+id/searchBar"
         android:layout_width="0dp"
@@ -48,11 +49,11 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchBar"
-        tools:listitem="@layout/item_book" />
+        app:layout_constraintTop_toBottomOf="@+id/searchBar"
+        tools:listitem="@layout/item_book"/>
 
     <!-- Bottom Navigation -->
     <LinearLayout
@@ -66,13 +67,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Home -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/black_border"
+
             android:gravity="center">
 
             <ImageView
@@ -89,13 +89,12 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
-        <!-- Favorite -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/black_border"
+
             android:gravity="center">
 
             <ImageView
@@ -112,17 +111,16 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
-        <!-- About Us -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:background="@drawable/black_border"
+
             android:gravity="center">
 
             <ImageView
-                android:id="@+id/informationIcon"
+                android:id="@+id/InfromationIcon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/baseline_info_24"
@@ -131,7 +129,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="About Us"
+                android:text="About us"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
