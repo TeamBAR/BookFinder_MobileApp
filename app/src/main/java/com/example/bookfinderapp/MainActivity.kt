@@ -2,6 +2,7 @@ package com.example.bookfinderapp
 
 import android.content.Intent
 import android.graphics.Rect
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -16,6 +17,7 @@ import com.codepath.asynchttpclient.AsyncHttpClient
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
 import okhttp3.Headers
 import androidx.appcompat.widget.SearchView
+import android.util.Log
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         bookList = mutableListOf()
         bookAdapter = BookAdapter(bookList) { book ->
-            // Handle adding/removing the book from favorites
+            // Handle adding/removing from favorites
             if (!favoriteBooks.contains(book)) {
                 favoriteBooks.add(book) // Add the book to favorites
                 Toast.makeText(this, "${book.title} added to favorites!", Toast.LENGTH_SHORT).show()
@@ -121,109 +123,133 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fetchBooksBySearch(query: String) {
-        val client = AsyncHttpClient()
-        val addedTitles = mutableSetOf<String>() // Set to track added titles
+        if (isNetworkAvailable()) {
+            val client = AsyncHttpClient()
+            val addedTitles = mutableSetOf<String>() // Set to track added titles
 
-        // Clear the list to avoid showing old books
-        bookList.clear()
-        bookAdapter.notifyDataSetChanged()
+            // Clear the list to avoid showing old books
+            bookList.clear()
 
-        // URL for fetching books based on search query
-        val url = "https://www.googleapis.com/books/v1/volumes?q=$query&maxResults=10"
+            // Notify the adapter after clearing the list
+            bookAdapter.notifyDataSetChanged()
 
-        client.get(url, object : JsonHttpResponseHandler() {
-            override fun onSuccess(statusCode: Int, headers: Headers, json: JsonHttpResponseHandler.JSON) {
-                // Handle success response
-                val items = json.jsonObject.optJSONArray("items") ?: return
-                for (i in 0 until items.length()) {
-                    val item = items.optJSONObject(i) ?: continue
-                    val volumeInfo = item.optJSONObject("volumeInfo") ?: continue
-                    val bookTitle = volumeInfo.optString("title", "No title")
-                    val imageLinks = volumeInfo.optJSONObject("imageLinks")
-                    val bookImageUrl = imageLinks?.optString("thumbnail", "") ?: ""
-                    val bookAuthors = volumeInfo.optJSONArray("authors")?.let { authorsJsonArray ->
-                        List(authorsJsonArray.length()) { index -> authorsJsonArray.getString(index) }
-                    }?.joinToString(", ") ?: "Unknown Author"
-                    val bookDescription = volumeInfo.optString("description", "No description available")
+            // URL for fetching books based on search query
+            val url = "https://www.googleapis.com/books/v1/volumes?q=$query&maxResults=10"
 
-                    // Avoid duplicate books
-                    if (!addedTitles.contains(bookTitle)) {
-                        val newBook = Book(bookTitle, bookImageUrl, bookAuthors, bookDescription)
-                        addedTitles.add(bookTitle)
-                        bookList.add(newBook)
-                        bookAdapter.notifyItemInserted(bookList.size - 1)
+            client.get(url, object : JsonHttpResponseHandler() {
+                override fun onSuccess(statusCode: Int, headers: Headers, json: JsonHttpResponseHandler.JSON) {
+                    // Handle success response
+                    val items = json.jsonObject.optJSONArray("items") ?: return
+                    for (i in 0 until items.length()) {
+                        val item = items.optJSONObject(i) ?: continue
+                        val volumeInfo = item.optJSONObject("volumeInfo") ?: continue
+                        val bookTitle = volumeInfo.optString("title", "No title")
+                        val imageLinks = volumeInfo.optJSONObject("imageLinks")
+                        val bookImageUrl = imageLinks?.optString("thumbnail", "") ?: ""
+                        val bookAuthors = volumeInfo.optJSONArray("authors")?.let { authorsJsonArray ->
+                            List(authorsJsonArray.length()) { index -> authorsJsonArray.getString(index) }
+                        }?.joinToString(", ") ?: "Unknown Author"
+                        val bookDescription = volumeInfo.optString("description", "No description available")
+
+                        // Avoid duplicate books
+                        if (!addedTitles.contains(bookTitle)) {
+                            val newBook = Book(bookTitle, bookImageUrl, bookAuthors, bookDescription)
+                            addedTitles.add(bookTitle)
+                            bookList.add(newBook)
+                        }
+                    }
+
+                    // Notify adapter on the main thread after all data is added
+                    runOnUiThread {
+                        bookAdapter.notifyDataSetChanged()
                     }
                 }
 
-                bookAdapter.notifyDataSetChanged()
-            }
-
-            override fun onFailure(statusCode: Int, headers: Headers?, errorResponse: String, throwable: Throwable?) {
-                // Handle failure response
-            }
-        })
-    }
-
-    private fun fetchRandomBooks(count: Int) {
-        val client = AsyncHttpClient()
-        val addedTitles = mutableSetOf<String>() // Set to track added titles
-
-        // Clear the list to avoid showing old books
-        bookList.clear()
-        bookAdapter.notifyDataSetChanged()
-
-        val randomStartIndex = (0..1000).random()
-        val url = "https://www.googleapis.com/books/v1/volumes?q=bestseller&maxResults=$count&startIndex=$randomStartIndex"
-
-        client.get(url, object : JsonHttpResponseHandler() {
-            override fun onSuccess(statusCode: Int, headers: Headers, json: JsonHttpResponseHandler.JSON) {
-                val items = json.jsonObject.optJSONArray("items") ?: return
-                for (i in 0 until items.length()) {
-                    val item = items.optJSONObject(i) ?: continue
-                    val volumeInfo = item.optJSONObject("volumeInfo") ?: continue
-
-                    val bookTitle = volumeInfo.optString("title", "No title")
-                    val imageLinks = volumeInfo.optJSONObject("imageLinks")
-                    val bookImageUrl = imageLinks?.optString("thumbnail", "") ?: ""
-                    val bookAuthors = volumeInfo.optJSONArray("authors")?.let { authorsJsonArray ->
-                        List(authorsJsonArray.length()) { index -> authorsJsonArray.getString(index) }
-                    }?.joinToString(", ") ?: "Unknown Author"
-                    val bookDescription = volumeInfo.optString("description", "No description available")
-
-                    if (!addedTitles.contains(bookTitle)) {
-                        val newBook = Book(bookTitle, bookImageUrl, bookAuthors, bookDescription)
-                        addedTitles.add(bookTitle)
-                        bookList.add(newBook)
-                        bookAdapter.notifyItemInserted(bookList.size - 1)
-                    }
+                override fun onFailure(statusCode: Int, headers: Headers?, errorResponse: String, throwable: Throwable?) {
+                    // Handle failure response
+                    Log.e("API Error", "Status Code: $statusCode, Error: $errorResponse", throwable)
+                    Toast.makeText(this@MainActivity, "Failed to fetch books", Toast.LENGTH_SHORT).show()
                 }
-
-                bookAdapter.notifyDataSetChanged()
-            }
-
-            override fun onFailure(statusCode: Int, headers: Headers?, errorResponse: String, throwable: Throwable?) {
-                // Handle failure response
-            }
-        })
-    }
-
-    // Function to hide the keyboard
-    private fun hideKeyboard() {
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        val currentFocusView = currentFocus
-        currentFocusView?.let {
-            imm.hideSoftInputFromWindow(it.windowToken, 0)
+            })
+        } else {
+            Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show()
         }
     }
 
-    // Handle the result when coming back from Favorite screen
+    private fun fetchRandomBooks(count: Int) {
+        if (isNetworkAvailable()) {
+            val client = AsyncHttpClient()
+            val addedTitles = mutableSetOf<String>() // Set to track added titles
+
+            // Clear the list to avoid showing old books
+            bookList.clear()
+
+            // Notify the adapter after clearing the list
+            bookAdapter.notifyDataSetChanged()
+
+            // Fetch random fiction books
+            val randomStartIndex = (0..1000).random() // Random start index for pagination
+            val url = "https://www.googleapis.com/books/v1/volumes?q=fiction&maxResults=$count&startIndex=$randomStartIndex"
+
+            client.get(url, object : JsonHttpResponseHandler() {
+                override fun onSuccess(statusCode: Int, headers: Headers, json: JsonHttpResponseHandler.JSON) {
+                    val items = json.jsonObject.optJSONArray("items") ?: return
+                    for (i in 0 until items.length()) {
+                        val item = items.optJSONObject(i) ?: continue
+                        val volumeInfo = item.optJSONObject("volumeInfo") ?: continue
+
+                        val bookTitle = volumeInfo.optString("title", "No title")
+                        val imageLinks = volumeInfo.optJSONObject("imageLinks")
+                        val bookImageUrl = imageLinks?.optString("thumbnail", "") ?: ""
+                        val bookAuthors = volumeInfo.optJSONArray("authors")?.let { authorsJsonArray ->
+                            List(authorsJsonArray.length()) { index -> authorsJsonArray.getString(index) }
+                        }?.joinToString(", ") ?: "Unknown Author"
+                        val bookDescription = volumeInfo.optString("description", "No description available")
+
+                        // Avoid duplicate books
+                        if (!addedTitles.contains(bookTitle)) {
+                            val newBook = Book(bookTitle, bookImageUrl, bookAuthors, bookDescription)
+                            addedTitles.add(bookTitle)
+                            bookList.add(newBook)
+                        }
+                    }
+
+                    // Notify adapter on the main thread after all data is added
+                    runOnUiThread {
+                        bookAdapter.notifyDataSetChanged()
+                    }
+                }
+
+                override fun onFailure(statusCode: Int, headers: Headers?, errorResponse: String, throwable: Throwable?) {
+                    // Handle failure response
+                    Log.e("API Error", "Status Code: $statusCode, Error: $errorResponse", throwable)
+                    Toast.makeText(this@MainActivity, "Failed to fetch books", Toast.LENGTH_SHORT).show()
+                }
+            })
+        } else {
+            Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        return connectivityManager.activeNetworkInfo?.isConnected == true
+    }
+
+    private fun hideKeyboard() {
+        val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        val currentFocusView = currentFocus
+        currentFocusView?.let {
+            inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == FAVORITE_BOOKS_REQUEST_CODE && resultCode == RESULT_OK) {
-            // Retrieve updated favorite books list
-            favoriteBooks = data?.getParcelableArrayListExtra("favorite_books") ?: mutableListOf()
-            // Save the updated favorites to SharedPreferences
-            SharedPrefsHelper.saveFavoriteBooks(this, favoriteBooks)
+            // Update the favorite books list when returning from the Favorite activity
+            favoriteBooks = SharedPrefsHelper.loadFavoriteBooks(this)
         }
     }
 }
