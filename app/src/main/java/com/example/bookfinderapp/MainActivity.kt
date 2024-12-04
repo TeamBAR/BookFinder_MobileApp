@@ -31,6 +31,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Load favorite books from SharedPreferences
+        favoriteBooks = SharedPrefsHelper.loadFavoriteBooks(this)
+
         // Initialize RecyclerView and the list to store Book data
         bookRecyclerView = findViewById(R.id.bookRecyclerView)
         bookRecyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
@@ -41,9 +44,13 @@ class MainActivity : AppCompatActivity() {
             if (!favoriteBooks.contains(book)) {
                 favoriteBooks.add(book) // Add the book to favorites
                 Toast.makeText(this, "${book.title} added to favorites!", Toast.LENGTH_SHORT).show()
+                // Save updated favorite books list to SharedPreferences
+                SharedPrefsHelper.saveFavoriteBooks(this, favoriteBooks)
             } else {
                 favoriteBooks.remove(book) // Remove the book from favorites
                 Toast.makeText(this, "${book.title} removed from favorites!", Toast.LENGTH_SHORT).show()
+                // Save updated favorite books list to SharedPreferences
+                SharedPrefsHelper.saveFavoriteBooks(this, favoriteBooks)
             }
         }
 
@@ -209,6 +216,8 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == FAVORITE_BOOKS_REQUEST_CODE && resultCode == RESULT_OK) {
             // Retrieve updated favorite books list
             favoriteBooks = data?.getParcelableArrayListExtra("favorite_books") ?: mutableListOf()
+            // Save the updated favorites to SharedPreferences
+            SharedPrefsHelper.saveFavoriteBooks(this, favoriteBooks)
         }
     }
 }

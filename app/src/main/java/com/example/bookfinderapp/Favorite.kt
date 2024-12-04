@@ -17,8 +17,8 @@ class Favorite : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.favorite_book)
 
-        // Retrieve the favorite books passed from MainActivity
-        favoriteBooks = intent.getParcelableArrayListExtra("favorite_books") ?: mutableListOf()
+        // Load the favorite books from SharedPreferences
+        favoriteBooks = SharedPrefsHelper.loadFavoriteBooks(this)
 
         // Set up the RecyclerView for displaying favorite books
         favoriteRecyclerView = findViewById(R.id.favoriteRecyclerView)
@@ -29,6 +29,9 @@ class Favorite : AppCompatActivity() {
             favoriteBooks.remove(book)
             favoriteBooksAdapter.notifyDataSetChanged()
             Toast.makeText(this, "${book.title} removed from favorites", Toast.LENGTH_SHORT).show()
+
+            // Save the updated favorite books list to SharedPreferences
+            SharedPrefsHelper.saveFavoriteBooks(this, favoriteBooks)
 
             // Send updated list back to MainActivity
             val resultIntent = intent
@@ -48,5 +51,22 @@ class Favorite : AppCompatActivity() {
         homeIcon.setOnClickListener {
             finish() // Close current activity and return to MainActivity
         }
+
+        // If the user is returning from MainActivity with new books to add
+        val newFavoriteBooks: List<Book>? = intent.getParcelableArrayListExtra("new_favorite_books")
+        newFavoriteBooks?.let {
+            // Add new books to the list
+            favoriteBooks.addAll(it)
+            favoriteBooksAdapter.notifyDataSetChanged() // Notify the adapter that the data has changed
+
+            // Save the updated list back to SharedPreferences
+            SharedPrefsHelper.saveFavoriteBooks(this, favoriteBooks)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // Save the favorite books when the activity is paused or closed
+        SharedPrefsHelper.saveFavoriteBooks(this, favoriteBooks)
     }
 }
