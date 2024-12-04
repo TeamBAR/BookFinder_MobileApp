@@ -1,6 +1,6 @@
 <!-- (This is a comment) INSTRUCTIONS: Go through this page and fill out any **bolded** entries with their correct values.-->
 
-# AND101 Milestone 2 - **Team/App Name**
+# AND101 Milestone 2 - **Team BAR/BookFinder**
 
 Submitted by:
 - **Abraham Gonzalez**
@@ -41,7 +41,8 @@ The following EXTRA features are implemented:
 
 Here's a video that demos all of the app's implemented features:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Demo' width='' alt='Video Demo' />
+![](https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExMjdiZ2h3MjRpMzBmYmZuNjV5Z2FqdWFra3Uxczd2amlqdjg0NnVyciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZJiPjzfiynbsLLt0Hk/giphy.gif)
+
 
 VIDEO created with **your chosen video tool**
 
