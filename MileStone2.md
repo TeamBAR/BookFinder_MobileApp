@@ -28,10 +28,10 @@ The following REQUIRED files are included:
   - [X] App Overview (Milestone 1)
   - [X] App Spec (Milestone 1)
   - [x] Checked off 2+ completed features
-  - [ ] 2+ Videos/GIFs of build progress
+  - [x] 2+ Videos/GIFs of build progress
 
-- [ ] Our 🎥 Demo Video
-  - [ ] We have also added the Demo Video Link to the Group Info Form on the course portal.
+- [x] Our 🎥 Demo Video
+  - [x] We have also added the Demo Video Link to the Group Info Form on the course portal.
 
 The following EXTRA features are implemented:
 
@@ -40,11 +40,14 @@ The following EXTRA features are implemented:
 ## 🎥 Demo Video
 
 Here's a video that demos all of the app's implemented features:
+![](https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHI4NWF6MjhtbHZ3czJiaXRzZXNzbWo1Z3F1dzBtaHZwdGpwOW9hdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/32MqRiDS0nPJUkr3Ns/giphy.gif)
+
+![](https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExMjdiZ2h3MjRpMzBmYmZuNjV5Z2FqdWFra3Uxczd2amlqdjg0NnVyciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZJiPjzfiynbsLLt0Hk/giphy.gif)
 
 ![](https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExMjdiZ2h3MjRpMzBmYmZuNjV5Z2FqdWFra3Uxczd2amlqdjg0NnVyciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZJiPjzfiynbsLLt0Hk/giphy.gif)
 
 
-VIDEO created with **your chosen video tool**
+VIDEO created with **ScreenToGif**
 
 ## Notes
 
