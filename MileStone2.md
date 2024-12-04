@@ -41,7 +41,7 @@ The following EXTRA features are implemented:
 
 Here's a video that demos all of the app's implemented features:
 
-![](https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHI4NWF6MjhtbHZ3czJiaXRzZXNzbWo1Z3F1dzBtaHZwdGpwOW9hdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/32MqRiDS0nPJUkr3Ns/giphy.gif) ![](https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExMjdiZ2h3MjRpMzBmYmZuNjV5Z2FqdWFra3Uxczd2amlqdjg0NnVyciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZJiPjzfiynbsLLt0Hk/giphy.gif) ![](https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExMjdiZ2h3MjRpMzBmYmZuNjV5Z2FqdWFra3Uxczd2amlqdjg0NnVyciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZJiPjzfiynbsLLt0Hk/giphy.gif)
+![](https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHI4NWF6MjhtbHZ3czJiaXRzZXNzbWo1Z3F1dzBtaHZwdGpwOW9hdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/32MqRiDS0nPJUkr3Ns/giphy.gif) ![](https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExMjdiZ2h3MjRpMzBmYmZuNjV5Z2FqdWFra3Uxczd2amlqdjg0NnVyciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZJiPjzfiynbsLLt0Hk/giphy.gif) 
 
 
 VIDEO created with **ScreenToGif**
