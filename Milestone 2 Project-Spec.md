@@ -38,8 +38,8 @@ Required Features:
 
 Stretch Features:
 
-[X] Have the option to view the abstract if available.
-[X] Link certain books based on selections or prefrences to recommend other options.
+- [X] Have the option to view the abstract if available.
+- [X] Link certain books based on selections or prefrences to recommend other options.
 
 ### 2. Chosen API(s)
 
