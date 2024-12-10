@@ -32,9 +32,9 @@
 
 Required Features:
 
-[X] **Search for books by title, author, or genre.**
-[X] **Display book details, including title, author, description, and cover image.**
-[x] **Save books to a personal "Reading List" for tracking.**
+- [X] **Search for books by title, author, or genre.**
+- [X] **Display book details, including title, author, description, and cover image.**
+- [X] **Save books to a personal "Reading List" for tracking.**
 
 Stretch Features:
 
