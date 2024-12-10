@@ -32,14 +32,14 @@
 
 Required Features:
 
-- **Search for books by title, author, or genre.**
-- **Display book details, including title, author, description, and cover image.**
-- **Save books to a personal "Reading List" for tracking.**
+[X] **Search for books by title, author, or genre.**
+[X] **Display book details, including title, author, description, and cover image.**
+[x] **Save books to a personal "Reading List" for tracking.**
 
 Stretch Features:
 
-- Have the option to view the abstract if available.
-- Link certain books based on selections or prefrences to recommend other options.
+[X] Have the option to view the abstract if available.
+[X] Link certain books based on selections or prefrences to recommend other options.
 
 ### 2. Chosen API(s)
 
